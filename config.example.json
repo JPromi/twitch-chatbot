@@ -1,0 +1,7 @@
+{
+    "UNAME": "BOT USER NAME",
+    "PASSWD": "oauth ID",
+    "CHANNEL": "YOUR TWITCH STREAM CHANNEL",
+
+    "prefix": "!"
+}
