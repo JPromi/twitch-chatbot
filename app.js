@@ -6,7 +6,6 @@ const figlet = require("figlet")
 const tmi = require('tmi.js');
 
 
-
 //Login
 const client = new tmi.Client({
 	options: { debug: true, messagesLogLevel: "info" },
@@ -24,9 +23,9 @@ const client = new tmi.Client({
 //Console
 client.connect(
 
-    figlet('JPromi BOT', function(err, data) {
+    figlet('JPromi Twitch BOT', function(err, data) {
         if (err) {
-            console.log('Something went wrong...');
+            console.log('Something with figlet went wrong...');
             console.dir(err);
             return;
         }
@@ -35,68 +34,28 @@ client.connect(
 
 ).catch(console.error);
 
-//Commands
-client.on('message', (channel, tags, message, self) => {
-	if(self) return;
+console.log(`Bot by JPromi.com`);
+console.log(`Twitch: https://twitch.tv/jpromi_`);
+console.log(`YouTube: https://www.youtube.com/c/JPromi`);
+console.log(`GitHub: https://github.com/JPromi`);
 
-    //hey command
-	if(message.toLowerCase() === config.prefix + 'hey') {
-		client.say(channel, `Hey @${tags.username}, schön das du im Stream bist!`);
-	}
 
-    // bot command
-    if(message.toLowerCase() === config.prefix + 'bot') {
-		client.say(channel, `Discord bot basiert auf javascript und wurde von JPromi programmiert. https://github.com/JPromi`);
-	}
 
-    //youtube command
-    if(message.toLowerCase() === config.prefix + 'youtube') {
-		client.say(channel, `YouTube: ` + cmdconf.YT);
-	}
-    if(message.toLowerCase() === config.prefix + 'yt') {
-		client.say(channel, `YouTube: ` + cmdconf.YT);
-	}
 
-    //Twitch command
-    if(message.toLowerCase() === config.prefix + 'twitch') {
-        client.say(channel, `Twitch: ` + cmdconf.TW);
-    }
+// **************************************************** 
+// Commands
+// ****************************************************
+var cmdsocial = require('./commands/socials.js');
+var cmdprobs = require('./commands/probs.js');
+var cmdrandom = require('./commands/random.js')
+var cmdinter = require('./commands/interaction.js')
 
-    //Instagram command
-    if(message.toLowerCase() === config.prefix + 'instagram') {
-        client.say(channel, `Instagram: ` + cmdconf.IG);
-    }
-    if(message.toLowerCase() === config.prefix + 'ig') {
-        client.say(channel, `Instagram: ` + cmdconf.IG);
-    }
-    if(message.toLowerCase() === config.prefix + 'insta') {
-        client.say(channel, `Instagram: ` + cmdconf.IG);
-    }
 
-    //Discord Server link
-    if(message.toLowerCase() === config.prefix + 'dc') {
-        client.say(channel, `Discord Server: ` + cmdconf.DC);
-    }
-    if(message.toLowerCase() === config.prefix + 'discord') {
-        client.say(channel, `Discord Server: ` + cmdconf.DC);
-    }
+client.on('chat', function(channel, user, message, _self) { 
+    if(_self) return;
 
-    //Website command
-    if(message.toLowerCase() === config.prefix + 'web') {
-        client.say(channel, `Website: ` + cmdconf.WWW);
-    }
-    if(message.toLowerCase() === config.prefix + 'website') {
-        client.say(channel, `Website: ` + cmdconf.WWW);
-    }
-    if(message.toLowerCase() === config.prefix + 'www') {
-        client.say(channel, `Website: ` + cmdconf.WWW);
-    }
-
-    //Donation link
-    if(message.toLowerCase() === config.prefix + 'tip') {
-        client.say(channel, `Donation Link: ` + cmdconf.TIP);
-    }
-    if(message.toLowerCase() === config.prefix + 'donation') {
-        client.say(channel, `Donation Link: ` + cmdconf.TIP);
-    }
+    cmdinter.run(client, channel, user, message, _self);
+    cmdprobs.run(client, channel, user, message, _self);
+    cmdrandom.run(client, channel, user, message, _self);
+    cmdsocial.run(client, channel, user, message, _self);
 });
